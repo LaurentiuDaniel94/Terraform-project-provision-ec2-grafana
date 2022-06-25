@@ -43,20 +43,6 @@ resource "aws_instance" "mtc_main" {
   }
 }
 
-# resource "null_resource" "grafana_update" {
-#   count = var.main_instance_count
-#   provisioner "remote-exec" {
-#     inline = ["sudo apt upgrade -y grafana && touch upgrade.log && echo 'I updated Grafana' >> upgrade.log"]
-
-#     connection {
-#       type        = "ssh"
-#       user        = "ubuntu"
-#       private_key = file("/home/ubuntu/.ssh/mtckey")
-#       host        = aws_instance.mtc_main[count.index].public_ip
-#     }
-#   }
-# }
-
 output "instance_ips" {
   value = { for i in aws_instance.mtc_main[*] : i.tags.Name => "${i.public_ip}:3000" }
 }
